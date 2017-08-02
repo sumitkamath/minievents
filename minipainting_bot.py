@@ -22,7 +22,7 @@ else:
 			exchanges_tracking.append(tmp_post)		
 
 reddit = praw.Reddit('bot1')
-subreddit = reddit.subreddit("minipaintingtest")
+subreddit = reddit.subreddit("minipainting")
 
 EXCHANGE_FLAIR_SIGNUP = u'exchangesignup'
 EXCHANGE_FLAIR_MATCHING = u'exchangematching'
@@ -62,13 +62,13 @@ while True:
 		reddit_post = reddit.submission(id=exchanges[0])
 		
 		for top_level_comment in reddit_post.comments:
-			if top_level_comment.body == EXCHANGE_SIGNUP_TEXT:
+			if top_level_comment.body.find(EXCHANGE_SIGNUP_TEXT) != -1:
 				check_for_user = [item for item in users_in_exchange if item[0] == top_level_comment.author.fullname]
 				check_for_user_in_current_scan = [item for item in users_in_current_scan if item[0] == top_level_comment.author.fullname]			
 				if len(check_for_user) == 0:
 					top_level_comment.reply(EXCHANGE_SIGNUP_PROCESSED_TEXT)
 					users_in_exchange.append((top_level_comment.author.fullname,top_level_comment.author.name))
-					print 'New user in exchange: ' + top_level_command.author.name
+					print 'New user in exchange: ' + top_level_comment.author.name
 				if len(check_for_user_in_current_scan) == 0:
 					users_in_current_scan.append((top_level_comment.author.fullname,top_level_comment.author.name))
 
